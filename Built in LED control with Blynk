@@ -1,0 +1,38 @@
+//The following scipt connects the ESP32 with an WiFi network and the Blynk service
+
+#define BLYNK_PRINT Serial
+
+#include <WiFi.h>                                               //including the WiFi library
+#include <WiFiClient.h>                                         
+#include <BlynkSimpleEsp32.h>                                   //including the Blynk library
+
+char auth[] = "xD4pjdVrRavCrvBkJ3Cc7fx0fbVgXQ7H";               //the authentificationkey is sent by Email 
+
+char ssid[] = "MobDev";                                         //WiFi network name
+char pass[] = "pskpskpsk";                                      //WiFi password
+
+void setup() {  
+  pinMode(LED_BUILTIN, OUTPUT);                                 //declare LED_BUILTIN (pin 5) to be an output
+  pinMode(LED_BUILTIN,HIGH);                                                               //turn on the LED
+  Serial.begin(115200);
+
+  delay(10);
+  Serial.print("Connecting to");                                //print the WiFi status on the serial monitor
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, pass);                                       //type in the ssid and password
+  int wifi_ctr = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("WiFi connected");     
+
+  Blynk.begin("xD4pjdVrRavCrvBkJ3Cc7fx0fbVgXQ7H", ssid, pass);  //Blynk needs the information wich device you want to connect
+
+}
+
+void loop(){
+    Blynk.run();                                                //start the Blynk loop
+}
